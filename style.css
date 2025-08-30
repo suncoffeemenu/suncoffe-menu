@@ -1,0 +1,76 @@
+:root{
+  --brown:#4B352A;
+  --tan:#CA7842;
+  --mint:#B2CD9C;
+  --cream:#F0F2BD;
+  --bg:#0f0f0f;
+  --surface:#171717;
+  --card:#1e1e1e;
+  --muted:#cfcfcf;
+  --text:#efefef;
+  --shadow:0 6px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:24px;font-family:Tahoma, "Segoe UI", Roboto, sans-serif;direction:rtl;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+
+header.top{
+  display:flex;align-items:center;gap:12px;justify-content:flex-start;margin-bottom:16px;
+}
+header.top h1{font-size:1.3rem;margin:0}
+.logo{width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,var(--brown),var(--tan));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1rem;box-shadow:var(--shadow)}
+
+main.container{display:block}
+.category-row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.cat{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.06);cursor:pointer;border:1px solid rgba(255,255,255,.08);color:#eaeaea}
+.cat:hover{background:rgba(255,255,255,.1)}
+.cat.active{background:linear-gradient(90deg,var(--tan),#d69163);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(202,120,66,.25)}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:12px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:6px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+
+.card:hover{
+  transform:translateY(-5px) scale(1.03);
+  box-shadow:0 12px 25px rgba(0,0,0,.3);
+}
+
+.thumb{
+  width:100%;
+  height:220px;
+  border-radius:10px;
+  object-fit:cover;
+  display:block;
+}
+
+.meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:6px;
+  font-size:0.9rem;
+}
+
+.title{font-weight:700}
+.price{background:linear-gradient(90deg,var(--mint),#d7e5c9);padding:4px 8px;border-radius:6px;font-weight:700;color:#24321f}
+
+footer{text-align:center;color:#b8b8b8;margin-top:16px}
+
+/* responsive */
+@media (max-width:600px){
+  body{padding:12px}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .card{padding:6px}
+  .logo{width:50px;height:50px;font-size:0.9rem}
+  header.top h1{font-size:1.1rem}
+}
