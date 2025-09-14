@@ -73,56 +73,103 @@ const items = [
   {t:'کیک شکلاتی', en:'Chocolate Cake', c:'cake', p:'90,000', img:'images/1.jpg'}
 ];
 
+const catLogos = {
+  all: 'images/logo-all.png',
+  cold: 'images/logo-cold.png',
+  shake: 'images/logo-shake.png',
+  coffee: 'images/logo-coffee.png',
+  tea: 'images/logo-tea.png',
+  food: 'images/logo-food.png',
+  breakfast: 'images/logo-breakfast.png',
+  cake: 'images/logo-cake.png'
+};
+
 const grid = document.getElementById('grid');
 const cats = document.querySelectorAll('.cat');
 const searchInput = document.getElementById('search');
 const langToggle = document.getElementById('langToggle');
 
+// اضافه کردن لوگو فقط یک بار
+cats.forEach(cat => {
+  if (!cat.querySelector('img')) {
+    const catName = cat.dataset.cat;
+    const logo = document.createElement('img');
+    logo.src = catLogos[catName];
+    logo.alt = 'Logo';
+    logo.style.width = '40px';
+    logo.style.height = '40px';
+    logo.style.objectFit = 'contain';
+    logo.style.marginBottom = '6px';
+    cat.prepend(logo);
+  }
+});
+
+// نمایش کارت‌ها
 function render(list){
   grid.innerHTML = '';
-  list.forEach(it=>{
+  list.forEach((it, index)=>{
     const card = document.createElement('article');
-    card.className='card';
-    card.dataset.cat=it.c;
+    card.className = 'card';
+    card.dataset.cat = it.c;
+
     const img = document.createElement('img');
-    img.className='thumb';
-    img.src=it.img;
-    img.alt=currentLang==='fa'?it.t:it.en;
+    img.className = 'thumb';
+    img.src = it.img;
+    img.alt = currentLang==='fa'?it.t:it.en;
+
     const meta = document.createElement('div');
-    meta.className='meta';
-    meta.innerHTML=`<div class="title">${currentLang==='fa'?it.t:it.en}</div>
-                    <div class="price">${it.p} T</div>`;
+    meta.className = 'meta';
+    meta.innerHTML = `<div class="title">${currentLang==='fa'?it.t:it.en}</div>
+                      <div class="price">${it.p} T</div>`;
+
     card.appendChild(img);
     card.appendChild(meta);
     grid.appendChild(card);
+
+    // hover
+    card.addEventListener('mouseenter', ()=> card.classList.add('hovered'));
+    card.addEventListener('mouseleave', ()=> card.classList.remove('hovered'));
+
+    // animation ظاهر شدن با delay ساده
+    setTimeout(() => card.classList.add('show'), index * 50);
   });
 }
 
+
+// اعمال فیلتر
 function applyFilter(){
   const active = document.querySelector('.cat.active').dataset.cat;
-  let filtered = items.filter(it=>(active==='all'||it.c===active));
+  let filtered = items.filter(it=>(active==='all' || it.c === active));
   const keyword = searchInput.value.toLowerCase();
-  if(keyword) filtered = filtered.filter(it=>
-    it.t.toLowerCase().includes(keyword) || it.en.toLowerCase().includes(keyword)
-  );
+  if(keyword) {
+    filtered = filtered.filter(it =>
+      it.t.toLowerCase().includes(keyword) || it.en.toLowerCase().includes(keyword)
+    );
+  }
   render(filtered);
 }
 
-cats.forEach(el=>el.addEventListener('click',()=>{
-  cats.forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-  applyFilter();
-}));
+// تغییر دسته فعال
+cats.forEach(el=>{
+  el.addEventListener('click', ()=>{
+    cats.forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    applyFilter();
+  });
+});
 
+// جستجو
 searchInput.addEventListener('input', applyFilter);
 
+// تغییر زبان بدون تکرار لوگو
 langToggle.addEventListener('click', ()=>{
-  currentLang = currentLang==='fa'?'en':'fa';
+  currentLang = currentLang==='fa' ? 'en' : 'fa';
   cats.forEach(cat=>{
-    cat.textContent = currentLang==='fa'?cat.dataset.catFa:cat.dataset.en;
+    const text = cat.querySelector('.cat-text');
+    text.textContent = currentLang==='fa' ? cat.dataset.catFa : cat.dataset.en;
   });
   applyFilter();
 });
 
-// initial render
+// رندر اولیه
 applyFilter();

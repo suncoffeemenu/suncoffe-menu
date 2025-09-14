@@ -7,6 +7,7 @@
   --tan: #d88e5d;
   --mint: #dfb186;
   --cream: #efdea6;
+
   --bg: #0f0f0f;
   --surface: #171717;
   --card: #1e1e1e;
@@ -19,19 +20,36 @@
 * {
   box-sizing: border-box;
 }
-html,
-body {
-  height: 100%;
+html, body {
   margin: 0;
-  padding: 24px;
+  padding: 0;
+  min-height: 100vh; /* ← مهم: حداقل ارتفاع صفحه */
   font-family: 'Noto Sans Arabic', Tahoma, "Segoe UI", Roboto, sans-serif;
   direction: rtl;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  background: linear-gradient(rgba(23, 17, 13, .55), rgba(23, 17, 13, .55)),
-    url('images/coffee beans.jpg') no-repeat center center fixed;
+  background: url('images/coffee beans.jpg') no-repeat center center fixed;
   background-size: cover;
+  overflow-x: hidden; /* جلوگیری از اسکرول افقی */
 }
+
+/* Gradient overlay */
+body::before {
+  content: "";
+  position: fixed; /* ثابت روی صفحه */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(23, 17, 13, 0.55);
+  z-index: -1;
+}
+
+/* Container برای padding داخلی */
+.container {
+  padding: 24px;
+}
+
 
 /* ===== Header ===== */
 header.top {
@@ -49,12 +67,29 @@ header.top .logo {
   height: 140px;
   border-radius: 70px;
   object-fit: cover;
-  box-shadow: var(--shadow);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); /* سایه اصلی */
+  position: relative;
 }
+
+/* لایه glow پشت لوگو */
+header.top .logo::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px; /* کمی بزرگتر از لوگو */
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(216, 142, 93, 0.3); /* رنگ دلخواه برای glow */
+  z-index: -1; /* پشت لوگو */
+  filter: blur(20px); /* محو کردن glow */
+}
+
 
 #search {
   width: 50%;
-  min-width: 180px;
+  min-width: 400px;
   margin-top: 6px;
   padding: 6px 10px;
   border-radius: 6px;
@@ -63,6 +98,9 @@ header.top .logo {
   color: var(--brown);
   transition: all 0.3s ease;
   font-size: 0.9rem;
+}
+#search {
+  caret-color: transparent; /* مخفی کردن caret */
 }
 
 #search:focus {
@@ -113,13 +151,96 @@ header.top .logo {
 }
 
 /* ===== Categories ===== */
+/* ===== دسته‌ها / Categories ===== */
 .category-row {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 6px 0 14px;
-  justify-content: center;
+  gap: 24px;               /* فاصله بین کارت‌ها */
+  overflow-x: auto;        /* اسکرول فعال باشه */
+  padding: 16px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;   /* Firefox */
 }
+
+/* مخفی کردن scrollbar برای Webkit (Chrome, Safari) */
+.category-row::-webkit-scrollbar {
+  display: none;
+}
+
+
+.category-row::-webkit-scrollbar-thumb {
+  background: var(--tan);
+  border-radius: 3px;
+}
+
+.category-row::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+/* هر کارت دایره‌ای */
+.cat {
+  flex: 0 0 auto;
+  width: 140px;             /* دایره بزرگتر */
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;                 /* فاصله بین لوگو و متن */
+  padding: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;          /* متن از دایره بیرون نزنه */
+  text-align: center;
+}
+
+/* افکت hover و active */
+.cat:hover,
+.cat.active {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, var(--tan), #d69163);
+  color: #fff;
+}
+
+/* لوگو داخل کارت */
+.cat-logo {
+  width: 80px;       /* لوگو بزرگتر */
+  height: 80px;
+  border-radius: 30%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+/* متن داخل دایره */
+.cat-text {
+  font-size: 0.9rem; 
+  line-height: 1.1;
+  max-width: 100%;      /* متن داخل دایره */
+  word-break: break-word;
+  overflow: hidden;
+}
+
+/* برای container که scroll عمودی داشته باشه */
+.cat-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 400px; /* ارتفاع container */
+  padding-right: 5px; /* فاصله از اسکرول */
+}
+
+.cat.active {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, var(--tan), #d69163);
+  color: #fff;
+}
+
 
 .cat {
   padding: 6px 10px;
@@ -130,6 +251,21 @@ header.top .logo {
   color: #eaeaea;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+}
+/* ===== Hover / Active روی دسته‌ها ===== */
+.cat:hover,
+.cat.active {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, var(--tan), #d69163);
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* ===== Categories / حذف مستطیل آبی روی موبایل و focus ===== */
+.cat, button, input {
+  outline: none; /* حذف دور کلیک */
+  -webkit-tap-highlight-color: transparent; /* حذف رنگ آبی روی موبایل */
 }
 
 .cat:hover {
@@ -146,25 +282,108 @@ header.top .logo {
 /* ===== Grid & Cards ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* کارت ثابت */
+  gap: 16px;
 }
 
+
+/* ===== Grid & Cards ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+/* ===== کارت‌ها ===== */
 .card {
   background: var(--card);
   border-radius: 12px;
   padding: 8px;
   box-shadow: var(--shadow);
   overflow: hidden;
-  transition: transform .3s ease, box-shadow .3s ease;
   display: flex;
   flex-direction: column;
   font-family: 'Noto Sans Arabic', sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* کارت‌ها وقتی ظاهر می‌شوند */
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover نرم */
+.card.hovered,
+.card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+}
+
+
+
+/* تصاویر و متا */
+.thumb {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  object-fit: cover;
+  display: block;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+.title {
+  font-weight: 700;
+  text-align: center;
+  margin-top: 4px;
+  order: -1;
+}
+
+.price {
+  background: linear-gradient(90deg, var(--mint), #d7e5c9);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #010101;
+  text-align: center;
+  order: 1;
+}
+
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===== Hover Effects (Fix) ===== */
+.cat:hover,
+.cat.active {
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+  background: linear-gradient(90deg, var(--tan), #d69163);
+  color: #fff;
+  border-color: transparent;
 }
 
 .card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, .3);
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+}
+
+.card, .cat, button {
+  cursor: pointer;       /* موس دست میشه وقتی روی کارت یا دسته */
+  user-select: none;     /* متن انتخاب نمیشه */
 }
 
 .thumb {
