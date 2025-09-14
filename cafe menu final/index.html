@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suncoffee Menu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <img src="images/logo.jpg" alt="SunCoffee Logo" class="logo">
+
+  <input id="search" type="text" placeholder="Search / جستجو">
+  
+  <button id="langToggle">EN / FA</button>
+</header>
+
+<div class="category-row" id="cats">
+  <div class="cat active" data-cat="all" data-cat-fa="همه" data-en="All">
+    <img src="images/logo-all.png" alt="logo" class="cat-logo">
+    <span class="cat-text">همه</span>
+  </div>
+
+  <div class="cat" data-cat="cold" data-cat-fa="نوشیدنی سرد" data-en="Cold Drinks">
+    <img src="images/logo-cold.png" alt="logo" class="cat-logo">
+    <span class="cat-text">نوشیدنی سرد</span>
+  </div>
+
+  <div class="cat" data-cat="shake" data-cat-fa="شیک" data-en="Shake">
+    <img src="images/logo-shake.png" alt="logo" class="cat-logo">
+    <span class="cat-text">شیک</span>
+  </div>
+
+  <div class="cat" data-cat="coffee" data-cat-fa="قهوه" data-en="Coffee">
+    <img src="images/logo-coffee.png" alt="logo" class="cat-logo">
+    <span class="cat-text">قهوه</span>
+  </div>
+
+  <div class="cat" data-cat="tea" data-cat-fa="دمنوش و چای" data-en="Tea">
+    <img src="images/logo-tea.png" alt="logo" class="cat-logo">
+    <span class="cat-text">دمنوش و چای</span>
+  </div>
+
+  <div class="cat" data-cat="food" data-cat-fa="غذا" data-en="Food">
+    <img src="images/logo-food.png" alt="logo" class="cat-logo">
+    <span class="cat-text">غذا</span>
+  </div>
+
+  <div class="cat" data-cat="breakfast" data-cat-fa="صبحانه" data-en="Breakfast">
+    <img src="images/logo-breakfast.png" alt="logo" class="cat-logo">
+    <span class="cat-text">صبحانه</span>
+  </div>
+
+  <div class="cat" data-cat="cake" data-cat-fa="کیک" data-en="Cake">
+    <img src="images/logo-cake.png" alt="logo" class="cat-logo">
+    <span class="cat-text">کیک</span>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <div>Tel: 09044977776</div>
+  <div>Address: Kelardasht, Moallem Square, Shahid Nateghi St.</div>
+  <div>suncoffee menu</div>
+  <div style="margin-top:6px;">
+    Instagram: <a href="https://instagram.com/suncoffee_kelardasht" target="_blank" style="color:var(--tan); text-decoration:none;">suncoffee_kelardasht</a>
+  </div>
+</footer>
+
+<script src="menu.js"></script>
+</body>
+</html> 
